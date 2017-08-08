@@ -74,6 +74,7 @@ class LineManager
                     $imgArray = array_only($imgEntity->toArray(),
                         ['large_url','middle_url','small_url','group_large','group_middle','group_small','is_delete']
                     );
+                    $imgArray['cover'] = $lineEntity->cover_img_id == $img['img_id']? 1:0;
                     $itemArray['imgs'][] = $imgArray;
                 }
                 $dayArray['items'][]= $itemArray;
