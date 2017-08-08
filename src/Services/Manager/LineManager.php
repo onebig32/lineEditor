@@ -29,7 +29,6 @@ class LineManager
     public function createLine(RequestDto $requestDto)
     {
         $createDto = $requestDto->getCreateDto();
-        dd($createDto);
         return $this->createEntity(new CreateEntityDto($createDto));
     }
 
