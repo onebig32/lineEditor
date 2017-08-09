@@ -16,13 +16,13 @@ class QueryWhereDto{
 		$likeKeys = ['title'];
 		$inKeys = ['user_ids'=>'created_user_id'];
 		foreach($this->whereParams as $key=>$value){
-			if($value && in_array($key, $eqKeys)){
+			if(isset($value) && in_array($key, $eqKeys)){
 				$result[] = [$key, '=', $value];
 			}
-			if($value && in_array($key, $likeKeys)){
+			if(isset($value) && $value && in_array($key, $likeKeys)){
 				$result[] = [$key, 'like', '%'.$value.'%'];
 			}
-			if($value && in_array($key, $inKeys)){
+			if(isset($value) && $value && in_array($key, $inKeys)){
 				$result[] = [$inKeys[$key], 'in', $value];
 			}
 		}

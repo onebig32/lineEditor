@@ -12,7 +12,7 @@ class LineInfo extends Controller
 {
     /**
      * 获取批量数据
-     * $_GET[fields] （非必填）需要返回的字段列表，可选值为返回示例值中的可以看到的字段，如"title，day_num，cover_url, tours "
+     * $_GET[fields] （非必填）需要返回的字段列表，可选值为返回示例值中的可以看到的字段，如"title，day_num，cover_url, tours"
      * $_GET[limit] （非必填）每页条数.每页返回最多返回100条,默认值为14.
      * $_GET[page] （非必填）页码.传入值为1代表第一页,传入值为2代表第二页,依此类推.默认返回的数据是从第一页开始.
      * $_GET[dayNum] （非必填）总天数
@@ -46,7 +46,7 @@ class LineInfo extends Controller
     public function addAjax(LineRules $request)
     {
         $lineId = (new LineManager())->createLine(new RequestDto($request));
-        return (new LineReplyDto())->response(['id'=>$lineId]);
+        return (new LineReplyDto())->response(['id' => $lineId]);
     }
 
     /**
@@ -76,8 +76,7 @@ class LineInfo extends Controller
     public function copyAjax(LineRules $request)
     {
         $lineId = (new LineManager())->copyLine(new RequestDto($request));
-        return (new LineReplyDto())->response(['id'=>$lineId]);
+        return (new LineReplyDto())->response(['id' => $lineId]);
     }
-
 
 }

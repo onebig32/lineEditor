@@ -80,6 +80,7 @@ class RequestDto
     public function getListWh()
     {
         $data = $this->request->all();
+        $where = [];
         if (isset($data['searchKey']) && $data['searchKey']) {
             $where['title'] = $data['searchKey'];
         }
@@ -90,12 +91,12 @@ class RequestDto
             $where['dest_city_pid'] = $data['destCityId'];
         }
         if (isset($data['draft']) && $data['draft']) {
-            $where['is_draft'] = $data['draft'];
+            $where['is_draft'] = $data['draft']=='true'?1:0;
         }
-        if (isset($data['self']) && $data['self']) {
-            $where['user_ids'] = [$this->loginUserId];
+        if (isset($data['self']) && $data['self']=='true') {
+            $where['user_ids'] =[$this->loginUserId];
         }
-        return $data;
+        return $where;
     }
 
     /**

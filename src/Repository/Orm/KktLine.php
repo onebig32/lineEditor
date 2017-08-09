@@ -60,6 +60,7 @@ class KktLine extends MModel
     {
         $result = ['data' => [], 'page' => $page, 'limit' => $limit, 'count' => 0];
         $model = $this->where('is_delete', 1);
+
         foreach ($dto->wh() as $row) {
             if($row[1]=='in'){
                 $model = $model->whereIn($row[0], $row[2]);

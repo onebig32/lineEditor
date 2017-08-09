@@ -40,6 +40,8 @@ class LineBusiness {
 		if(!$lineEntity){
 			throw new LineException('线路不存在','001');
 		}
+		$lineEntity->title = $lineEntity->title.'复制';
+		$lineEntity->is_draft = 1;
 		return $lineEntity;
 	}
 
