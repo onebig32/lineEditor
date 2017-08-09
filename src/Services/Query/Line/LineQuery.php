@@ -75,13 +75,13 @@ class LineQuery
         $dayIdArray = $lineOrm->days->pluck('day_id');
         $dayResDto = $dayQueryService->listQuery(['ids' => $dayIdArray], 1, count($dayIdArray));
         $days = [];
-        $itemArray = [];
         $itemKeys = ['id', 'type_id', 'title', 'desc', 'time_type', 'time',
             'self_care', 'dest_city_id', 'dest_city_name', 'distance', 'distance_type'];
         $imgKeys = ['id', 'large_url', 'middle_url', 'small_url', 'group_large', 'group_middle', 'group_small'];
         if ($dayIdArray) {
             foreach ($dayResDto['data'] as $dayDto) {
                 $dayArr = $dayDto->baseData(['id', 'day']);
+                $dayArr['items'] = [];
                 $itemIdArray = $dayDto->getItems()->pluck('item_id');
                 //单项资源数据
                 if ($itemIdArray) {
@@ -93,10 +93,14 @@ class LineQuery
                         if ($imgIdArray) {
                             $imgResDto = $imgQueryService->listQuery(['ids' => $imgIdArray], 1, count($imgIdArray));
                             foreach ($imgResDto['data'] as $imgDto) {
-                                $itemArray['imgs'][] = $imgDto->baseData($imgKeys);
+                                $imgData = $imgDto->baseData($imgKeys);;
+                                $imgData['large_url_'] = app('Fastdfs')->localToUrl($imgData['group_large'], $imgData['large_url']);
+                                $imgData['middle_url_'] = app('Fastdfs')->localToUrl($imgData['group_middle'], $imgData['middle_url']);
+                                $imgData['small_url_'] = app('Fastdfs')->localToUrl($imgData['group_small'], $imgData['small_url']);
+                                $itemArray['imgs'][] = $imgData;
                             }
                         }
-                        $dayArr['items'][] = $itemArray;
+                        $dayArr['items'] = $itemArray;
                     }
                 }
                 $days[] = $dayArr;
