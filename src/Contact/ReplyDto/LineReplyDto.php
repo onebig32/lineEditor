@@ -13,8 +13,7 @@ class LineReplyDto extends AbstractHttpDto
         $result = $data;
         $result['data'] = [];
         $keys = [
-            'dest_city_pid', 'title', 'day_num', 'cover_url',
-            'cover_group', 'cover_img_id', 'tours','cover_url_'
+            'id','dest_city_pid','dest_city_name', 'title', 'day_num', 'tours','cover_url_'
         ];
         foreach ($data['data'] as $k => $obj) {
             $array = $obj->baseData($keys);

@@ -11,7 +11,8 @@ class KktLine extends MModel
     public $timestamps = true;
     protected $table = 'kkt_line';
     protected $fillable = [
-        'title', 'day_num', 'uuid', 'created_user_id', 'created_organization_id', 'is_delete', 'created_at', 'updated_at', 'is_draft','cover_url','cover_group','cover_img_id','dest_city_pid'
+        'title', 'day_num', 'uuid', 'created_user_id', 'created_organization_id', 'is_delete', 'created_at', 'updated_at',
+        'is_draft','cover_url','cover_group','cover_img_id','dest_city_pid','dest_city_name'
     ];
     protected $connection = "mysql_platform";
 

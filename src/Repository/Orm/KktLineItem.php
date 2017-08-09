@@ -63,7 +63,6 @@ class KktLineItem extends MModel{
 			}else{
 				$model = $model->where($row[0], $row[1], $row[2]);
 			}
-
 		}
 		foreach($dto->relation() as $relation){
 			$model = $model->with([$relation=>function ($query) {

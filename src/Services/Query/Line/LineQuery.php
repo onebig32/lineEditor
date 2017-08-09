@@ -78,25 +78,25 @@ class LineQuery
         $itemArray = [];
         $itemKeys = ['id', 'type_id', 'title', 'desc', 'time_type', 'time',
             'self_care', 'dest_city_id', 'dest_city_name', 'distance', 'distance_type'];
-        $imgKey = ['id', 'large_url', 'middle_url', 'small_url', 'group_large', 'group_middle', 'group_small'];
+        $imgKeys = ['id', 'large_url', 'middle_url', 'small_url', 'group_large', 'group_middle', 'group_small'];
         if ($dayIdArray) {
             foreach ($dayResDto['data'] as $dayDto) {
-                $dayArr = $dayDto->baseData(['id', 'day', 'items']);
+                $dayArr = $dayDto->baseData(['id', 'day']);
                 $itemIdArray = $dayDto->getItems()->pluck('item_id');
                 //单项资源数据
                 if ($itemIdArray) {
                     $itemResDto = $itemQueryService->listQuery(['ids' => $itemIdArray, 'withImgs' => true], 1, count($itemIdArray));
                     foreach ($itemResDto['data'] as $itemDto) {
-                        $itemArray[$itemDto->getId()] = $itemDto->baseData($itemKeys);
+                        $itemArray = $itemDto->baseData($itemKeys);
                         //图片数据
                         $imgIdArray = $itemDto->getImgs()->pluck('img_id');
                         if ($imgIdArray) {
                             $imgResDto = $imgQueryService->listQuery(['ids' => $imgIdArray], 1, count($imgIdArray));
                             foreach ($imgResDto['data'] as $imgDto) {
-                                $itemArray[$itemDto->getId()]['imgs'][] = $imgDto->baseData($imgKey);
+                                $itemArray['imgs'][] = $imgDto->baseData($imgKeys);
                             }
                         }
-                        $dayArr['items'] = $itemArray;
+                        $dayArr['items'][] = $itemArray;
                     }
                 }
                 $days[] = $dayArr;

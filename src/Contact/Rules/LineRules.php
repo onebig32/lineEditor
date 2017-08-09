@@ -25,7 +25,8 @@ class LineRules extends Request{
 			'dayNum' => 'integer|min:1',
 			'destCityId' => 'integer',
 			'searchKey'=> 'string',
-			'self'=>'boolean'
+			'self'=>'string|in:true,false',
+			'draft'=>'string|in:true,false'
 		];
 	}
 	

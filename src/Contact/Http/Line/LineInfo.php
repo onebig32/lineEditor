@@ -24,12 +24,8 @@ class LineInfo extends Controller
     public function listAjax(LineRules $request)
     {
         $requestDto = new RequestDto($request);
-        $where = $requestDto->getListWh();
-        if ($request->input('self', false)) {
-            $userInfo = $this->getSessionInfo();
-            $where['user_ids'] = [$userInfo['id']];
-        }
-        $queryResult = (new LineQuery())->listQuery($where, $requestDto->getPage(), $requestDto->getLimit());
+        $requestDto->loginUserId = $this->getSessionId();
+        $queryResult = (new LineQuery())->listQuery($requestDto->getListWh(), $requestDto->getPage(), $requestDto->getLimit());
         return (new LineReplyDto())->tableList($queryResult, $requestDto->getField());
     }
 
@@ -50,7 +46,7 @@ class LineInfo extends Controller
     public function addAjax(LineRules $request)
     {
         $lineId = (new LineManager())->createLine(new RequestDto($request));
-        return (new LineReplyDto())->response([$lineId]);
+        return (new LineReplyDto())->response(['id'=>$lineId]);
     }
 
     /**
@@ -79,8 +75,8 @@ class LineInfo extends Controller
      */
     public function copyAjax(LineRules $request)
     {
-        $result = (new LineManager())->copyLine(new RequestDto($request));
-        return (new LineReplyDto())->response($result);
+        $lineId = (new LineManager())->copyLine(new RequestDto($request));
+        return (new LineReplyDto())->response(['id'=>$lineId]);
     }
 
 

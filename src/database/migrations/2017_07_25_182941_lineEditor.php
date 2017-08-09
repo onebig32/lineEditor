@@ -16,6 +16,7 @@ class LineEditor extends BaseMigration
             $this->schema->create($tableName, function ($table) {
                 $table->increments('id')->unsigned()->comment('表主键id');
                 $table->integer('dest_city_pid')->default(0)->comment('(冗余字段)目的国父id,对应kkt_city表的id');
+                $table->string('dest_city_name')->default(0)->comment('(冗余字段)目的国名称');
                 $table->string('title')->default('')->comment('线路名称');
                 $table->unsignedTinyInteger('day_num')->default(0)->comment('线路天数');
                 $table->string('cover_url')->default('')->comment('封面图地址');

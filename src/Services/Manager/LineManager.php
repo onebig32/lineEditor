@@ -47,9 +47,10 @@ class LineManager
     public function copyLine(RequestDto $requestDto)
     {
         $lineEntity = (new KktLine())->getExistEntity($requestDto->getId());
+        $lineEntity->title = $lineEntity->title.'复制';
         $createDto = [
             'line' => array_only($lineEntity->toArray(),
-                ['title', 'day_num', 'dest_city_pid', 'cover_url', 'cover_group','cover_img_id','is_draft','is_draft']),
+                ['title', 'day_num', 'dest_city_pid', 'dest_city_name','cover_url', 'cover_group','cover_img_id','is_draft','is_draft']),
         ];
         $dayIdArray = array_pluck($lineEntity->days,'day_id');
         $dayOrm = new KktLineDay();

@@ -3,14 +3,14 @@ namespace Line\Services\Manager\Dto;
 
 use Illuminate\Http\Request;
 use Line\Business\Exceptions\ParamException;
-
+use AppSession;
 /**
  * request dto对象
  */
 class RequestDto
 {
     private $request;
-
+    public $loginUserId;
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -23,6 +23,8 @@ class RequestDto
     {
         $data = $this->request->all();
         $destCity = [];
+        $destCityName =[];
+        $coverArray = ['cover_url' => '', 'cover_group' => ''];
         foreach ($data['tours'] as &$row) {
             $row['is_delete'] = isset($row['is_delete']) && $row['is_delete'] ? 2 : 1;
             foreach ($row['items'] as &$item) {
@@ -30,9 +32,10 @@ class RequestDto
                 if ($item['type_id'] == 7) {
                     //目的国
                     array_push($destCity, $item['dest_city_id']);
+                    array_push($destCityName, $item['dest_city_name']);
                 }
                 //封面图
-                $coverArray = ['cover_url' => '', 'cover_group' => ''];
+
                 if (isset($item['imgs']) && $item['imgs']) {
                     foreach ($item['imgs'] as &$img) {
                         $img['is_delete'] = isset($img['is_delete']) && $img['is_delete'] ? 2 : 1;
@@ -51,8 +54,10 @@ class RequestDto
             throw new ParamException('参数异常，缺少目的国', '001');
         } else if (count(array_unique($destCity)) == 1) {
             $destCityPid = $destCity[0];
+            $destCityName = $destCityName[0];
         } else {
             $destCityPid = 38;
+            $destCityName = '两国连线';
         }
         $resDto = [
             'line' => [
@@ -60,6 +65,7 @@ class RequestDto
                 'title' => $data['title'],
                 'day_num' => count($data['tours']),
                 'dest_city_pid' => $destCityPid,
+                'dest_city_name' => $destCityName,
                 'cover_url' => $coverArray['cover_url'],
                 'cover_group' => $coverArray['cover_group']
             ],
@@ -84,13 +90,16 @@ class RequestDto
             $where['dest_city_pid'] = $data['destCityId'];
         }
         if (isset($data['draft']) && $data['draft']) {
-            $where['draft'] = $data['draft'];
+            $where['is_draft'] = $data['draft'];
+        }
+        if (isset($data['self']) && $data['self']) {
+            $where['user_ids'] = [$this->loginUserId];
         }
         return $data;
     }
 
     /**
-     * 获取构建数据DTO
+     * 获取页数
      */
     public function getPage()
     {

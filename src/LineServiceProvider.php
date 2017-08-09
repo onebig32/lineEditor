@@ -15,14 +15,7 @@ class LineServiceProvider extends ServiceProvider{
 		foreach ($provides as $provider) {
 			$this->app->register($provider);
 		}
-		
-		$this->registerReflect();
-	}
 
-	
-	protected function registerReflect(){
-		$this->app->singleton('LineRoutes', function($app){
-			return new HttpRoutesReflection();
-		});
+
 	}
 }
