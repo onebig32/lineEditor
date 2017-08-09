@@ -76,7 +76,7 @@ class LineQuery
         $dayResDto = $dayQueryService->listQuery(['ids' => $dayIdArray], 1, count($dayIdArray));
         $days = [];
         $itemKeys = ['id', 'type_id', 'title', 'desc', 'time_type', 'time',
-            'self_care', 'dest_city_id', 'dest_city_name', 'distance', 'distance_type'];
+            'self_care','taffic_type', 'distance_type',' distance','dest_city_id', 'dest_city_name'];
         $imgKeys = ['id', 'large_url', 'middle_url', 'small_url', 'group_large', 'group_middle', 'group_small'];
         if ($dayIdArray) {
             foreach ($dayResDto['data'] as $dayDto) {
@@ -88,6 +88,18 @@ class LineQuery
                     $itemResDto = $itemQueryService->listQuery(['ids' => $itemIdArray, 'withImgs' => true], 1, count($itemIdArray));
                     foreach ($itemResDto['data'] as $itemDto) {
                         $itemArray = $itemDto->baseData($itemKeys);
+                        //过滤餐饮特有字段
+                        if($itemArray['type_id']!=5){
+                            $itemArray = array_except($itemArray,[ 'self_care', 'distance_type']);
+                        }
+                        //过滤口岸特有字段
+                        if($itemArray['type_id']!=7){
+                            $itemArray = array_except($itemArray,['dest_city_id','dest_city_name']);
+                        }
+                        //过滤交通特有字段
+                        if($itemArray['type_id']!=8){
+                            $itemArray = array_except($itemArray,['taffic_type', 'distance_type',' distance']);
+                        }
                         //图片数据
                         $imgIdArray = $itemDto->getImgs()->pluck('img_id');
                         if ($imgIdArray) {
@@ -100,7 +112,7 @@ class LineQuery
                                 $itemArray['imgs'][] = $imgData;
                             }
                         }
-                        $dayArr['items'] = $itemArray;
+                        $dayArr['items'][] = $itemArray;
                     }
                 }
                 $days[] = $dayArr;

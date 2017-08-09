@@ -10,7 +10,7 @@ class KktLineItem extends MModel{
 	public $timestamps = true;
 	protected $table = 'kkt_line_item';
 	protected $fillable = [
-		'type_id', 'title', 'desc','time_type','time','is_delete', 'created_at', 'updated_at','type_name'
+		'type_id', 'title', 'desc','time_type','time','is_delete', 'created_at', 'updated_at','self_care','dest_city_id','dest_city_name','distance','distance_type'
 	];
 	protected $connection = "mysql_platform";
 	
