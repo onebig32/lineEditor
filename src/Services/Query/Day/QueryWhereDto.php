@@ -17,10 +17,10 @@ class QueryWhereDto{
 
 		foreach($this->whereParams as $key=>$value){
 			if($value && in_array($key, $eqKeys)){
-				$result[] = [$key, '=', $value];
+				$result[] = ['column' =>$key,'operator'=> '=', 'value'=>$value];
 			}
 			if($value && in_array($key, array_keys($inKeys))){
-				$result[] = [$inKeys[$key], 'in', $value];
+				$result[] = ['column'=>$inKeys[$key], 'operator'=>'in','value'=> $value];
 			}
 		}
 		return $result;

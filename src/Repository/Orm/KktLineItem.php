@@ -57,13 +57,15 @@ class KktLineItem extends MModel{
 	{
 		$result = ['data' => [], 'page' => $page, 'limit' => $limit, 'count' => 0];
 		$model = $this->where('is_delete', 1);
+		//条件
 		foreach ($dto->wh() as $row) {
-			if($row[1]=='in'){
-				$model = $model->whereIn($row[0], $row[2]);
+			if($row['operator']=='in'){
+				$model = $model->whereIn($row['column'], $row['value']);
 			}else{
-				$model = $model->where($row[0], $row[1], $row[2]);
+				$model = $model->where($row['column'], $row['operator'], $row['value']);
 			}
 		}
+		//关系
 		foreach($dto->relation() as $relation){
 			$model = $model->with([$relation=>function ($query) {
 				$query->where('is_delete', 1);

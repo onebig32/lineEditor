@@ -27,6 +27,7 @@ class RequestDto
         $coverArray = ['cover_url' => '', 'cover_group' => ''];
         foreach ($data['tours'] as &$row) {
             $row['is_delete'] = isset($row['is_delete']) && $row['is_delete'] ? 2 : 1;
+            //单项资源数据
             foreach ($row['items'] as &$item) {
                 $item['is_delete'] = isset($item['is_delete']) && $item['is_delete'] ? 2 : 1;
                 if ($item['type_id'] == 7) {
@@ -34,11 +35,11 @@ class RequestDto
                     array_push($destCity, $item['dest_city_id']);
                     array_push($destCityName, $item['dest_city_name']);
                 }
-                //封面图
-
+                //图片数据
                 if (isset($item['imgs']) && $item['imgs']) {
                     foreach ($item['imgs'] as &$img) {
                         $img['is_delete'] = isset($img['is_delete']) && $img['is_delete'] ? 2 : 1;
+                        //封面图
                         if ($img['cover'] == 1) {
                             $coverArray = [
                                 'cover_url' => $img['middle_url'],
@@ -63,11 +64,12 @@ class RequestDto
             'line' => [
                 'id' => isset($data['id']) ? $data['id'] : null,
                 'title' => $data['title'],
+                'is_draft'=>$data['is_draft'],
                 'day_num' => count($data['tours']),
                 'dest_city_pid' => $destCityPid,
                 'dest_city_name' => $destCityName,
                 'cover_url' => $coverArray['cover_url'],
-                'cover_group' => $coverArray['cover_group']
+                'cover_group' => $coverArray['cover_group'],
             ],
             'tours' => $data['tours']
         ];
@@ -85,7 +87,12 @@ class RequestDto
             $where['title'] = $data['searchKey'];
         }
         if (isset($data['dayNum']) && $data['dayNum']) {
-            $where['day_num'] = $data['dayNum'];
+            if($data['dayNum']>15){
+                //15日以上
+                $where['bg_day_num'] = 15;
+            }else{
+                $where['day_num'] = $data['dayNum'];
+            }
         }
         if (isset($data['destCityId']) && $data['destCityId']) {
             $where['dest_city_pid'] = $data['destCityId'];
@@ -132,7 +139,7 @@ class RequestDto
     /**
      * 获取显示字段
      */
-    public function getField(){
+    public function getFields(){
         $fieldArray = [];
         if($fieldStr = $this->request->input('fields')){
             $fieldArray = explode(',',$fieldStr);

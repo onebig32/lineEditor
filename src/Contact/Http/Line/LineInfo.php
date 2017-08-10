@@ -26,7 +26,7 @@ class LineInfo extends Controller
         $requestDto = new RequestDto($request);
         $requestDto->loginUserId = $this->getSessionId();
         $queryResult = (new LineQuery())->listQuery($requestDto->getListWh(), $requestDto->getPage(), $requestDto->getLimit());
-        return (new LineReplyDto())->tableList($queryResult, $requestDto->getField());
+        return (new LineReplyDto())->tableList($queryResult, $requestDto->getFields());
     }
 
     /**

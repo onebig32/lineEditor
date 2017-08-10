@@ -23,7 +23,6 @@ class ItemQuery{
 		return $result;
 	}
 
-
 	/**
 	 * 根据id查询
 	 */
