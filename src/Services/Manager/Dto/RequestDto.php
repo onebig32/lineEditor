@@ -3,7 +3,6 @@ namespace Line\Services\Manager\Dto;
 
 use Illuminate\Http\Request;
 use Line\Business\Exceptions\ParamException;
-use AppSession;
 /**
  * request dto对象
  */
@@ -25,8 +24,14 @@ class RequestDto
         $destCity = [];
         $destCityName =[];
         $coverArray = ['cover_url' => '', 'cover_group' => ''];
+        $dayNum = 0;
         foreach ($data['tours'] as &$row) {
-            $row['is_delete'] = isset($row['is_delete']) && $row['is_delete'] ? 2 : 1;
+            if(isset($row['is_delete'])&&$row['is_delete']=='true'){
+                $row['is_delete'] = 2;
+            }else{
+                $row['is_delete'] = 1;
+                $dayNum++;
+            }
             //单项资源数据
             foreach ($row['items'] as &$item) {
                 $item['is_delete'] = isset($item['is_delete']) && $item['is_delete'] ? 2 : 1;
@@ -65,7 +70,7 @@ class RequestDto
                 'id' => isset($data['id']) ? $data['id'] : null,
                 'title' => $data['title'],
                 'is_draft'=>$data['is_draft'],
-                'day_num' => count($data['tours']),
+                'day_num' => $dayNum,
                 'dest_city_pid' => $destCityPid,
                 'dest_city_name' => $destCityName,
                 'cover_url' => $coverArray['cover_url'],
@@ -89,7 +94,7 @@ class RequestDto
         if (isset($data['dayNum']) && $data['dayNum']) {
             if($data['dayNum']>15){
                 //15日以上
-                $where['bg_day_num'] = 15;
+                $where['bt_day_num'] = 15;
             }else{
                 $where['day_num'] = $data['dayNum'];
             }

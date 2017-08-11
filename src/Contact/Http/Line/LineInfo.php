@@ -55,8 +55,8 @@ class LineInfo extends Controller
      */
     public function updateAjax(LineRules $request)
     {
-        $result = (new LineManager())->editLine(new RequestDto($request));
-        return (new LineReplyDto())->response($result);
+        (new LineManager())->editLine(new RequestDto($request));
+        return (new LineReplyDto())->response(true);
     }
 
     /**

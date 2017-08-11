@@ -111,7 +111,7 @@ class LineManager
                 $imgEntitys[$key][] = $tmpEntity;
             }
         }
-        // 构建资源实体集合
+        // 构建单项资源实体集合
         $itemEntitys = [];
         $itemBusiness = new ItemBusiness();
         foreach ($requestDto->getItemData() as $key => $row) {
@@ -125,7 +125,7 @@ class LineManager
         // 构建线路实体
         $lineEntity = (new LineEntity())->arrayToProp($requestDto->getLineData());
         $lineEntity = (new LineBusiness())->createLine($lineEntity);
-        // 构建线路天数实体
+        // 构建天数实体集合
         $dayBusiness = new DayBusiness();
         $dayEntitys = [];
         foreach ($requestDto->getDayData() as $key => $row) {
@@ -154,7 +154,7 @@ class LineManager
                     }
                 }
             }
-            //保存资源单项实体
+            //保存单项资源实体
             $itemIds = [];
             $importArray = [];
             $index = 0;
@@ -169,7 +169,7 @@ class LineManager
                     $index++;
                 }
             }
-            //保存线路天数实体
+            //保存天数实体
             $dayIds = [];
             foreach ($dayEntitys as $key => $entity) {
                 $entity->import_arrays = $importArray[$key];

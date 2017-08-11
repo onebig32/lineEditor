@@ -23,7 +23,7 @@ class QueryWhereDto
 
         $inKeys = ['user_ids' => 'created_user_id'];
 
-        $btKeys = ['bg_day_num' => 'day_num'];
+        $btKeys = ['bt_day_num' => 'day_num'];
 
         foreach ($this->whereParams as $key => $value) {
             if (isset($value) && in_array($key, $eqKeys)) {
